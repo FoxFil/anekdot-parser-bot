@@ -127,8 +127,6 @@ def send_anekdot_ru(message: Message, n: int) -> None:
 
     """
     try:
-        bot.delete_message(message.chat.id, message.message_id)
-
         url = "https://www.anekdot.ru/last/anekdot/"
         response = requests.get(url, timeout=10)
 
@@ -142,9 +140,10 @@ def send_anekdot_ru(message: Message, n: int) -> None:
             for x in soup.find_all("div", class_="text")
         ]
 
-        bot.send_message(
-            message.chat.id,
+        bot.edit_message_text(
             jokes[n],
+            message.chat.id,
+            message.message_id,
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
