@@ -152,6 +152,18 @@ def send_anekdot_ru(message: Message, n: int) -> None:
                             text="➡",
                             callback_data=f"anekdot.ru;{n + 1}",
                         ),
+                    ]
+                    if n == 0
+                    else [
+                        InlineKeyboardButton(
+                            text="⬅️",
+                            callback_data=f"anekdot.ru;{n - 1}",
+                        ),
+                        InlineKeyboardButton(text="✅", callback_data="accept"),
+                        InlineKeyboardButton(
+                            text="➡",
+                            callback_data=f"anekdot.ru;{n + 1}",
+                        ),
                     ],
                 ],
             ),
