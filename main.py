@@ -23,6 +23,7 @@ CAPTIONS = {
     "animal": "🐹 Шутка про животных",
     "computer": "💻 Компьютерная шутка",
     "shtirlitz": "🪖 Шутка про Штирлица",
+    "subscriber": "😛 Шутка от подписчика",
 }
 
 
@@ -173,6 +174,37 @@ def send_anekdot_ru(message: Message, n: int) -> None:
             message.chat.id,
             "🙄 Шутки на сайте anekdot.ru закончились!",
         )
+
+
+@bot.message_handler(content_types=["text"])
+def add_title(message: Message) -> None:
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.send_message(
+        message.chat.id,
+        message.text.replace(" anekdotov.net,", "").replace(
+            " https://vse-shutochki.ru/anekdoty", ""
+        ),
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(text="🗣", callback_data="short_joke"),
+                    InlineKeyboardButton(text="🙄", callback_data="people_joke"),
+                    InlineKeyboardButton(text="🍔", callback_data="food_joke"),
+                    InlineKeyboardButton(text="🥴", callback_data="alco_joke"),
+                    InlineKeyboardButton(text="👉", callback_data="long_joke"),
+                    InlineKeyboardButton(text="🔞", callback_data="18+_joke"),
+                ],
+                [
+                    InlineKeyboardButton(text="💰", callback_data="money_joke"),
+                    InlineKeyboardButton(text="🤓", callback_data="vovochka_joke"),
+                    InlineKeyboardButton(text="🐹", callback_data="animal_joke"),
+                    InlineKeyboardButton(text="💻", callback_data="computer_joke"),
+                    InlineKeyboardButton(text="🪖", callback_data="shtirlitz_joke"),
+                    InlineKeyboardButton(text="😛", callback_data="subscriber_joke"),
+                ],
+            ],
+        ),
+    )
 
 
 bot.infinity_polling()
