@@ -170,10 +170,11 @@ def send_anekdot_ru(message: Message, n: int) -> None:
             ),
         )
     except IndexError:
-        bot.delete_message(message.chat.id, message.message_id)
-        bot.send_message(
-            message.chat.id,
+        bot.edit_message_text(
             "🙄 Шутки на сайте anekdot.ru закончились!",
+            message.chat.id,
+            message.message_id,
+            reply_markup=None,
         )
 
 
