@@ -46,7 +46,7 @@ def handle_query(call: telebot.types.CallbackQuery) -> None:
     if data[0] == "anekdot.ru":
         send_anekdot_ru(call.message, int(data[1]))
         bot.answer_callback_query(call.id)
-    if data[0] == "accept":
+    if data[0].startswith("accept"):
         bot.edit_message_reply_markup(
             call.message.chat.id,
             call.message.message_id,
@@ -66,6 +66,10 @@ def handle_query(call: telebot.types.CallbackQuery) -> None:
                         InlineKeyboardButton(text="🐹", callback_data="animal_joke"),
                         InlineKeyboardButton(text="💻", callback_data="computer_joke"),
                         InlineKeyboardButton(text="🪖", callback_data="shtirlitz_joke"),
+                        InlineKeyboardButton(
+                            text="⬅",
+                            callback_data=f"anekdot.ru;{data[0].split('$')[1]}",
+                        ),
                     ],
                 ],
             ),
@@ -148,7 +152,7 @@ def send_anekdot_ru(message: Message, n: int) -> None:
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(text="✅", callback_data="accept"),
+                        InlineKeyboardButton(text="✅", callback_data=f"accept${n}"),
                         InlineKeyboardButton(
                             text="➡",
                             callback_data=f"anekdot.ru;{n + 1}",
@@ -160,7 +164,7 @@ def send_anekdot_ru(message: Message, n: int) -> None:
                             text="⬅️",
                             callback_data=f"anekdot.ru;{n - 1}",
                         ),
-                        InlineKeyboardButton(text="✅", callback_data="accept"),
+                        InlineKeyboardButton(text="✅", callback_data=f"accept${n}"),
                         InlineKeyboardButton(
                             text="➡",
                             callback_data=f"anekdot.ru;{n + 1}",
