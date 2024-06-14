@@ -53,19 +53,51 @@ def handle_query(call: telebot.types.CallbackQuery) -> None:
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(text="🗣", callback_data="short_joke"),
-                        InlineKeyboardButton(text="🙄", callback_data="people_joke"),
-                        InlineKeyboardButton(text="🍔", callback_data="food_joke"),
-                        InlineKeyboardButton(text="🥴", callback_data="alco_joke"),
-                        InlineKeyboardButton(text="👉", callback_data="long_joke"),
-                        InlineKeyboardButton(text="🔞", callback_data="18+_joke"),
+                        InlineKeyboardButton(
+                            text="🗣",
+                            callback_data=f"short_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🙄",
+                            callback_data=f"people_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🍔",
+                            callback_data=f"food_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🥴",
+                            callback_data=f"alco_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="👉",
+                            callback_data=f"long_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🔞", callback_data=f"18+_joke${data[0].split('$')[1]}"
+                        ),
                     ],
                     [
-                        InlineKeyboardButton(text="💰", callback_data="money_joke"),
-                        InlineKeyboardButton(text="🤓", callback_data="vovochka_joke"),
-                        InlineKeyboardButton(text="🐹", callback_data="animal_joke"),
-                        InlineKeyboardButton(text="💻", callback_data="computer_joke"),
-                        InlineKeyboardButton(text="🪖", callback_data="shtirlitz_joke"),
+                        InlineKeyboardButton(
+                            text="💰",
+                            callback_data=f"money_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🤓",
+                            callback_data=f"vovochka_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🐹",
+                            callback_data=f"animal_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="💻",
+                            callback_data=f"computer_joke${data[0].split('$')[1]}",
+                        ),
+                        InlineKeyboardButton(
+                            text="🪖",
+                            callback_data=f"shtirlitz_joke${data[0].split('$')[1]}",
+                        ),
                         InlineKeyboardButton(
                             text="⬅",
                             callback_data=f"anekdot.ru;{data[0].split('$')[1]}",
@@ -75,13 +107,23 @@ def handle_query(call: telebot.types.CallbackQuery) -> None:
             ),
         )
         bot.answer_callback_query(call.id)
-    if data[0].endswith("_joke"):
+    if data[0].split("$")[0].endswith("_joke"):
         joke_type = data[0].split("_")[0]
         bot.edit_message_text(
             f"""*{CAPTIONS[joke_type]}*\n\n{'||' if joke_type == "18+" else ""}{call.message.text}{'||' if joke_type == "18+" else ""}""",  # noqa: E501
             call.message.chat.id,
             call.message.message_id,
             parse_mode="Markdown",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="⬅",
+                            callback_data=f"anekdot.ru;{data[0].split('$')[1]}",
+                        ),
+                    ],
+                ]
+            ),
         )
         bot.answer_callback_query(call.id)
 
