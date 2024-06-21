@@ -74,7 +74,8 @@ def handle_query(call: telebot.types.CallbackQuery) -> None:
                             callback_data=f"long_joke${data[0].split('$')[1]}",
                         ),
                         InlineKeyboardButton(
-                            text="🔞", callback_data=f"18+_joke${data[0].split('$')[1]}"
+                            text="🔞",
+                            callback_data=f"18+_joke${data[0].split('$')[1]}",
                         ),
                     ],
                     [
@@ -122,8 +123,10 @@ def handle_query(call: telebot.types.CallbackQuery) -> None:
                             callback_data=f"anekdot.ru;{data[0].split('$')[1]}",
                         ),
                     ],
-                ]
-            ),
+                ],
+            )
+            if data[0].split("$")[1].isdigit()
+            else None,
         )
         bot.answer_callback_query(call.id)
 
@@ -226,29 +229,48 @@ def send_anekdot_ru(message: Message, n: int) -> None:
 
 @bot.message_handler(content_types=["text"])
 def add_title(message: Message) -> None:
+    """Add title to the joke.
+
+    Parameters
+    ----------
+    message : telebot.types.Message
+        message
+
+    Returns
+    -------
+    None
+
+    """
     bot.delete_message(message.chat.id, message.message_id)
     bot.send_message(
         message.chat.id,
         message.text.replace(" anekdotov.net,", "").replace(
-            " https://vse-shutochki.ru/anekdoty", ""
+            " https://vse-shutochki.ru/anekdoty",
+            "",
         ),
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(text="🗣", callback_data="short_joke"),
-                    InlineKeyboardButton(text="🙄", callback_data="people_joke"),
-                    InlineKeyboardButton(text="🍔", callback_data="food_joke"),
-                    InlineKeyboardButton(text="🥴", callback_data="alco_joke"),
-                    InlineKeyboardButton(text="👉", callback_data="long_joke"),
-                    InlineKeyboardButton(text="🔞", callback_data="18+_joke"),
+                    InlineKeyboardButton(text="🗣", callback_data="short_joke$none"),
+                    InlineKeyboardButton(text="🙄", callback_data="people_joke$none"),
+                    InlineKeyboardButton(text="🍔", callback_data="food_joke$none"),
+                    InlineKeyboardButton(text="🥴", callback_data="alco_joke$none"),
+                    InlineKeyboardButton(text="👉", callback_data="long_joke$none"),
+                    InlineKeyboardButton(text="🔞", callback_data="18+_joke$none"),
                 ],
                 [
-                    InlineKeyboardButton(text="💰", callback_data="money_joke"),
-                    InlineKeyboardButton(text="🤓", callback_data="vovochka_joke"),
-                    InlineKeyboardButton(text="🐹", callback_data="animal_joke"),
-                    InlineKeyboardButton(text="💻", callback_data="computer_joke"),
-                    InlineKeyboardButton(text="🪖", callback_data="shtirlitz_joke"),
-                    InlineKeyboardButton(text="😛", callback_data="subscriber_joke"),
+                    InlineKeyboardButton(text="💰", callback_data="money_joke$none"),
+                    InlineKeyboardButton(text="🤓", callback_data="vovochka_joke$none"),
+                    InlineKeyboardButton(text="🐹", callback_data="animal_joke$none"),
+                    InlineKeyboardButton(text="💻", callback_data="computer_joke$none"),
+                    InlineKeyboardButton(
+                        text="🪖",
+                        callback_data="shtirlitz_joke$none",
+                    ),
+                    InlineKeyboardButton(
+                        text="😛",
+                        callback_data="subscriber_joke$none",
+                    ),
                 ],
             ],
         ),
